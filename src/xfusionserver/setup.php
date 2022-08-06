@@ -23,14 +23,13 @@
 */
 
 /***************************************************************************
- * Author  ......... Jack Zhang
  * Version ......... 1.0
  * History ......... 2017/3/27 Created
  * Purpose ......... Used by cacti plugin framework, to list/install/uninstall
  *                   this plugin
  ***************************************************************************/
 
-define("XFusion_SERVER_PLUGIN_VERSION", "1.2.0001");
+define("XFusion_SERVER_PLUGIN_VERSION", "1.2.2");
 
 /**
  * put plugin init code here
@@ -131,11 +130,11 @@ function xfusionserver_setup_templaes() {
         $fp = fopen($template_file, "r");
         $xml_data = fread($fp, filesize($template_file));
         fclose($fp);
-
-        $rra_array = array();
-
-        /* obtain debug information if it's set */
-        import_xml_data($xml_data, true, $rra_array);
+        if (strpos($config['cacti_version'], "0.") === 0) {
+            import_xml_data($xml_data, true, array());
+        } else {
+            import_xml_data($xml_data, true, 1);
+        }
     }
 }
 
@@ -304,8 +303,8 @@ function xfusionserver_show_tab()
     $realm_id2 = 0;
 
     //check user permissions
-    if (isset($user_auth_realm_filenames{basename('server_list.php')})) {
-        $realm_id2 = $user_auth_realm_filenames{basename('server_list.php')};
+    if (isset($user_auth_realm_filenames[basename('server_list.php')])) {
+        $realm_id2 = $user_auth_realm_filenames[basename('server_list.php')];
     }
 
     if ((db_fetch_assoc("select user_auth_realm.realm_id

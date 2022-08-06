@@ -1,6 +1,5 @@
 <?php
 /***************************************************************************
- * Author  ......... Ni Peng
  * Version ......... 1.0
  * History ......... 2017/3/27 Created
  * Purpose ......... Used by cacti plugin framework, to list/install/uninstall
@@ -827,7 +826,7 @@ function hs_get_server_details($server_type, &$result, $host_id, $blades, $categ
         $sql .= " AND category_num IN (" .join(",", $category_nums). ")";
     }
 
-    $sql .= " ORDER BY category_num, CAST(instance AS integer)";
+    $sql .= " ORDER BY category_num, CAST(instance AS signed integer)";
     $rows = db_fetch_assoc($sql);
     if (empty($rows)) {
         return array();

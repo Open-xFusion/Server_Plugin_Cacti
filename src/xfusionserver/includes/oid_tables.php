@@ -1,6 +1,5 @@
 <?php
 /***************************************************************************
- * Author  ......... Jack Zhang
  * Version ......... 1.0
  * History ......... 2017/4/19 Created
  * Purpose ......... Define all oids for XFUSION server related information

@@ -1,6 +1,5 @@
 <?php
 /***************************************************************************
- * Author  ......... Jack Zhang
  * Version ......... 1.0
  * History ......... 2017/3/27 Created
  * Purpose ......... Auto scan XFUSION server in given subnet

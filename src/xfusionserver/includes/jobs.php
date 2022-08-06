@@ -1,6 +1,5 @@
 <?php
 /***************************************************************************
- * Author  ......... Jack Zhang
  * Version ......... 1.0
  * History ......... 2017/4/18 Created
  * Purpose ......... Background jobs for scan server and get server info
@@ -141,13 +140,12 @@ function import_servers($batch_id, $overwrite_exist) {
             continue;
 
         $server_type = hs_snmp_get_server_type($server);
+        $server["server_type"] = $server_type;
         if ($server_type > -1) {
             //NOTE: setup->xfusionserver_device_save will create new record
             //UPDATE 5/12: when batch import, $save['hw_is_xfusion_server'] == '', so will not create
-
             hs_init_server_info($server, $server["host_id"], 999);
             hs_update_cacti_host_type($server['host_id'], $server_type, $server, 1);
-            $server["server_type"] = $server_type;
         }
     }
 

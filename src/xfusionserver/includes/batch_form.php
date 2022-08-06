@@ -1,56 +1,57 @@
 <?php
+
 /***************************************************************************
- * Author  ......... Jack Zhang
  * Version ......... 1.0
  * History ......... 2017/4/18 Created
  * Purpose ......... The batch operate form is used by both scan_server and
  *                       batch_import pages.
  ***************************************************************************/
 
-function server_batch_form($title, $empty_message, $show_ping=true) {
+function server_batch_form($title, $empty_message, $show_ping = true)
+{
     global $config;
     $tokens = csrf_get_tokens();
     $name = $GLOBALS['csrf']['input-name'];
 ?>
     <form name="chk">
-    <table id="tblScanResult" class="cactiTable" cellpadding="3" cellspacing="0" border="0" width="100%">
-        <tr>
-            <td colspan="100" class="textHeaderDark">
-                <?php echo $title; ?>
-            </td>
-        </tr>
-        <tr class='tableHeader'>
-            <th><a class='textSubHeaderDark' href='#'>IP Address</a></th>
-            <?php if ($show_ping) { ?>
-            <th><a class='textSubHeaderDark' href='#'>PING Latency</a></th>
-            <?php } ?>
-            <th>SNMP Ver</th>
-            <th>SNMP Port</th>
-            <th>Community</th>
-            <th>User Name</th>
-            <th>Auth Protocol</th>
-            <th>Auth Pass</th>
-            <th>Privacy Protocol</th>
-            <th>Privacy Pass</th>
-            <th width="1%" align="right" class='tdSelectAll' align='right'>
-                <input type='checkbox' name='all' title='Select All' onClick='SelectAll("chkSelect_",this.checked)'>
-            </th>
-        </tr>
-        <tr class='odd selectable' id="rowEmpty">
-            <td colspan="12" onClick='select_line("1")'>
-                <?php echo $empty_message; ?>
-            </td>
-        </tr>
-    </table>
-    <table align="right" style="margin-top:20px;">
-        <tr>
-            <td>
-                <input type="hidden" id="batchImportId">
-                <input id="btnImport" style="display:none;" type="button" value="Import Selected Servers">
-                <input id="btnReturn" type="button" value="Return" onClick="window.location.href='server_list.php'">
-            </td>
-        </tr>
-    </table>
+        <table id="tblScanResult" class="cactiTable" cellpadding="3" cellspacing="0" border="0" width="100%">
+            <tr>
+                <td colspan="100" class="textHeaderDark">
+                    <?php echo $title; ?>
+                </td>
+            </tr>
+            <tr class='tableHeader'>
+                <th><a class='textSubHeaderDark' href='#'>IP Address</a></th>
+                <?php if ($show_ping) { ?>
+                    <th><a class='textSubHeaderDark' href='#'>PING Latency</a></th>
+                <?php } ?>
+                <th>SNMP Ver</th>
+                <th>SNMP Port</th>
+                <th>Community</th>
+                <th>User Name</th>
+                <th>Auth Protocol</th>
+                <th>Auth Pass</th>
+                <th>Privacy Protocol</th>
+                <th>Privacy Pass</th>
+                <th width="1%" align="right" class='tdSelectAll' align='right'>
+                    <input type='checkbox' name='all' title='Select All' onClick='typeof(selectAll) == "function" ? selectAll("chkSelect_",this.checked) : SelectAll("chkSelect_",this.checked)'>
+                </th>
+            </tr>
+            <tr class='odd selectable' id="rowEmpty">
+                <td colspan="12" onClick='select_line("1")'>
+                    <?php echo $empty_message; ?>
+                </td>
+            </tr>
+        </table>
+        <table align="right" style="margin-top:20px;">
+            <tr>
+                <td>
+                    <input type="hidden" id="batchImportId">
+                    <input id="btnImport" style="display:none;" type="button" value="Import Selected Servers">
+                    <input id="btnReturn" type="button" value="Return" onClick="window.location.href='server_list.php'">
+                </td>
+            </tr>
+        </table>
     </form>
 
     <div id="importDialog" title="Import server is in progress, please wait...">
@@ -64,11 +65,11 @@ function server_batch_form($title, $empty_message, $show_ping=true) {
         var importServersList = [];
 
         var importButton = $("#btnImport");
-        importButton.button().on("click", function () {
+        importButton.button().on("click", function() {
             var batchImporter = new BatchImporter(
                 $("#batchImportId").val(),
                 "importDialog",
-                function(){
+                function() {
                     importButton.button("option", {
                         disabled: true,
                         label: "Importing..."
@@ -92,14 +93,14 @@ function server_batch_form($title, $empty_message, $show_ping=true) {
             this.onStop = onStop;
             this.batchId = batchId;
             this.progressTimer = undefined;
-            this.progressbar = $("#"+dialogId+" .progressbar");
-            this.progressLabel = $("#"+dialogId+" .progress-label");
-            this.importDialog = $("#"+dialogId).dialog({
+            this.progressbar = $("#" + dialogId + " .progressbar");
+            this.progressLabel = $("#" + dialogId + " .progress-label");
+            this.importDialog = $("#" + dialogId).dialog({
                 autoOpen: false,
                 modal: true,
                 closeOnEscape: false,
                 resizable: false,
-                beforeClose: function () {
+                beforeClose: function() {
                     if (_this.onStop) _this.onStop();
                 }
             });
@@ -108,7 +109,7 @@ function server_batch_form($title, $empty_message, $show_ping=true) {
                 if (!(serverList && serverList.length > 0))
                     return alert('No data!');
 
-                if(_this.onStart) _this.onStart();
+                if (_this.onStart) _this.onStart();
 
                 var submitServers = [];
                 var i = serverList.length;
@@ -144,24 +145,24 @@ function server_batch_form($title, $empty_message, $show_ping=true) {
                     url: 'batch_import.php',
                     type: 'POST',
                     data: {
-                        <?php echo $name ?> : '<?php echo $tokens ?>',
+                        <?php echo $name ?>: '<?php echo $tokens ?>',
                         action: 'import',
                         batch_id: _this.batchId,
                         overwrite_exist: $("#overwrite_exist").is(':checked') ? 1 : 0,
                         servers: submitServers
                     },
                     dataType: 'json',
-                    success: function (data, textStatus, jqXHR) {
+                    success: function(data, textStatus, jqXHR) {
                         if (!data.success) {
                             _this.stopImporting(true);
-                            if (data.data +"" == "0") {
+                            if (data.data + "" == "0") {
                                 return alert("no server imported because of all servers are exist.\nand you choosed not overwrite exist item(s).");
                             }
 
                             return alert(data.message);
                         }
                     },
-                    error: function (xhr, textStatus) {
+                    error: function(xhr, textStatus) {
                         _this.stopImporting(true);
                         alert("Unexpected error, please check your network!");
                     }
@@ -169,7 +170,9 @@ function server_batch_form($title, $empty_message, $show_ping=true) {
 
                 _this.importDialog.dialog("option", "buttons", [{
                     text: "Running in Background",
-                    click: function() { _this.stopImporting(true); }
+                    click: function() {
+                        _this.stopImporting(true);
+                    }
                 }]);
 
                 _this.importDialog.dialog("open");
@@ -182,12 +185,12 @@ function server_batch_form($title, $empty_message, $show_ping=true) {
                     url: 'batch_import.php',
                     type: 'POST',
                     data: {
-                        <?php echo $name ?> : '<?php echo $tokens ?>',
+                        <?php echo $name ?>: '<?php echo $tokens ?>',
                         action: 'import_progress',
                         batch_id: _this.batchId
                     },
                     dataType: 'json',
-                    success: function (data, textStatus, jqXHR) {
+                    success: function(data, textStatus, jqXHR) {
                         if (!data.success) {
                             return alert("get import process error: " + data.message);
                         }
@@ -202,7 +205,7 @@ function server_batch_form($title, $empty_message, $show_ping=true) {
                                 window.location.href = "<?php echo $config['url_path']; ?>plugins/xfusionserver/import_result.php?batch_id=" + _this.batchId;
                         }
                     },
-                    error: function (xhr, textStatus) {
+                    error: function(xhr, textStatus) {
                         alert("Unexpected error, please check your network!");
                         _this.stopImporting(true);
                     }
@@ -222,10 +225,10 @@ function server_batch_form($title, $empty_message, $show_ping=true) {
 
             _this.progressbar.progressbar({
                 value: false,
-                change: function () {
+                change: function() {
                     _this.progressLabel.text("Current Progress: " + _this.progressbar.progressbar("value") + "%");
                 },
-                complete: function () {
+                complete: function() {
                     _this.progressLabel.text("Complete!");
                 }
             });
@@ -240,8 +243,8 @@ function server_batch_form($title, $empty_message, $show_ping=true) {
 
             var resultTable = $('#tblScanResult');
             var rows = resultTable.find("tr");
-            for (var i=0;i<rows.length;i++) {
-                if (i<2) continue;
+            for (var i = 0; i < rows.length; i++) {
+                if (i < 2) continue;
                 $(rows[i]).remove();
             }
 
@@ -253,7 +256,7 @@ function server_batch_form($title, $empty_message, $show_ping=true) {
                 if (server.ping_latency == 0)
                     latency = '<1ms';
                 else if (server.ping_latency > 0)
-                    latency = server.ping_latency+'ms';
+                    latency = server.ping_latency + 'ms';
                 var rowClass = rowClassNames[i % 2];
                 if (server.status == 1)
                     rowClass = 'pingSuccess';
@@ -262,21 +265,18 @@ function server_batch_form($title, $empty_message, $show_ping=true) {
                 else if (server.status == 3)
                     rowClass = 'pingError';
                 var addRow = ' \
-                <tr class="' +rowClass+ ' selectable" id="dqline_' +i+ '"> \
-                    <td>' +server.ip_address+ '</td> \
-                    <?php if ($show_ping) { ?>
-                    <td>' +latency+ '</td> \
-                    <?php } ?>
-                    <td>' +snmpVerList(i, server.snmp_version)+ '</td> \
-                    <td><input id="port' +i+ '" value="'+(server.snmp_port?server.snmp_port:161)+ '" class="inputText"></td> \
-                    <td><input id="community' +i+ '" value="'+(server.snmp_community?server.snmp_community:'public')+ '" class="inputText"></td> \
-                    <td><input id="secName' +i+ '" value="'+(server.snmp_username?server.snmp_username:'')+ '" class="inputText"></td> \
-                    <td>' +authProtocolList(i, server.snmp_auth_protocol)+ '</td> \
-                    <td><input id="authPass' +i+ '" value="'+(server.snmp_password?server.snmp_password:'')+ '" type="password" class="inputText"></td> \
-                    <td>' +priProtocolList(i, server.snmp_priv_protocol)+ '</td> \
-                    <td><input id="priPass' +i+ '" value="'+(server.snmp_priv_passphrase?server.snmp_priv_passphrase:'')+ '" type="password" class="inputText"></td> \
+                <tr class="' + rowClass + ' selectable" id="dqline_' + i + '"> \
+                    <td>' + server.ip_address + '</td>' +
+                    <?php if ($show_ping) { ?> '<td>' + latency + '</td>' + <?php } ?> '<td>' + snmpVerList(i, server.snmp_version) + '</td> \
+                    <td><input id="port' + i + '" value="' + (server.snmp_port ? server.snmp_port : 161) + '" class="inputText"></td> \
+                    <td><input id="community' + i + '" value="' + (server.snmp_community ? server.snmp_community : 'public') + '" class="inputText"></td> \
+                    <td><input id="secName' + i + '" value="' + (server.snmp_username ? server.snmp_username : '') + '" class="inputText"></td> \
+                    <td>' + authProtocolList(i, server.snmp_auth_protocol) + '</td> \
+                    <td><input id="authPass' + i + '" value="' + (server.snmp_password ? server.snmp_password : '') + '" type="password" class="inputText"></td> \
+                    <td>' + priProtocolList(i, server.snmp_priv_protocol) + '</td> \
+                    <td><input id="priPass' + i + '" value="' + (server.snmp_priv_passphrase ? server.snmp_priv_passphrase : '') + '" type="password" class="inputText"></td> \
                     <td width="1%" align="right"> \
-                        <input type="checkbox" name="chkSelect_' +i+ '" id="chkSelect_' +i+ '" ' +(server.status == 1 ? 'checked' : '')+ '> \
+                        <input type="checkbox" name="chkSelect_' + i + '" id="chkSelect_' + i + '" ' + (server.status == 1 ? 'checked' : '') + '> \
                     </th> \
                 </tr>';
 
@@ -288,41 +288,59 @@ function server_batch_form($title, $empty_message, $show_ping=true) {
 
         function snmpVerList(i, selected) {
             return ' \
-            <select id="snmpVersion' +i+ '"> \
-                <option value="1" ' +((1==selected) ? 'selected' : '')+ '>Version 1</option> \
-                <option value="2" ' +((2==selected) ? 'selected' : '')+ '>Version 2</option> \
-                <option value="3" ' +((3==selected) ? 'selected' : '')+ '>Version 3</option> \
+            <select id="snmpVersion' + i + '"> \
+                <option value="1" ' + ((1 == selected) ? 'selected' : '') + '>Version 1</option> \
+                <option value="2" ' + ((2 == selected) ? 'selected' : '') + '>Version 2</option> \
+                <option value="3" ' + ((3 == selected) ? 'selected' : '') + '>Version 3</option> \
             </select>';
         }
 
         function authLevelList(i, selected) {
             return ' \
-            <select id="authLevel' +i+ '"> \
-                <option value="2" ' +((2==selected) ? 'selected' : '')+ '>authNoPriv</option> \
-                <option value="3" ' +((3==selected) ? 'selected' : '')+ '>authPriv</option> \
+            <select id="authLevel' + i + '"> \
+                <option value="2" ' + ((2 == selected) ? 'selected' : '') + '>authNoPriv</option> \
+                <option value="3" ' + ((3 == selected) ? 'selected' : '') + '>authPriv</option> \
             </select>';
         }
 
         function authProtocolList(i, selected) {
             selected = selected ? selected.toUpperCase() : '';
+            if (!"<?php echo $config['cacti_version'];?>".startsWith("0.")) {
+                return ' \
+                <select id="authProtocol' + i + '"> \
+                    <option value="MD5" ' + (('MD5' == selected) ? 'selected' : '') + '>MD5</option> \
+                    <option value="SHA" ' + (('SHA' == selected) ? 'selected' : '') + '>SHA</option> \
+                    <option value="SHA256" ' + (('SHA256' == selected) ? 'selected' : '') + '>SHA-256</option> \
+                    <option value="SHA512" ' + (('SHA512' == selected) ? 'selected' : '') + '>SHA-512</option> \
+                </select>';
+            }
             return ' \
-            <select id="authProtocol' +i+ '"> \
-                <option value="MD5" ' +(('MD5'==selected) ? 'selected' : '')+ '>MD5 (default)</option> \
-                <option value="SHA" ' +(('SHA'==selected) ? 'selected' : '')+ '>SHA</option> \
+            <select id="authProtocol' + i + '"> \
+                <option value="MD5" ' + (('MD5' == selected) ? 'selected' : '') + '>MD5</option> \
+                <option value="SHA" ' + (('SHA' == selected) ? 'selected' : '') + '>SHA</option> \
             </select>';
         }
 
         function priProtocolList(i, selected) {
             selected = selected ? selected.toUpperCase() : '';
+            if (!"<?php echo $config['cacti_version'];?>".startsWith("0.")) {
+                return ' \
+                <select id="privProtocol' + i + '"> \
+                    <option value="[None]" ' + ((!selected || '[None]' == selected) ? 'selected' : '') + '>[None]</option> \
+                    <option value="DES" ' + (('DES' == selected) ? 'selected' : '') + '>DES</option> \
+                    <option value="AES128" ' + (('AES' == selected || 'AES128' == selected) ? 'selected' : '') + '>AES</option>  \
+                    <option value="AES256" ' + (('AES256' == selected) ? 'selected' : '') + '>AES-256</option>  \
+                </select>';
+            }
             return ' \
-            <select id="privProtocol' +i+ '"> \
-                <option value="[None]" ' +((!selected || '[None]'==selected) ? 'selected' : '')+ '>[None]</option> \
-                <option value="DES" ' +(('DES'==selected) ? 'selected' : '')+ '>DES (default)</option> \
-                <option value="AES128" ' +(('AES' == selected || 'AES128' == selected) ? 'selected' : '')+ '>AES</option>  \
+            <select id="privProtocol' + i + '"> \
+                <option value="[None]" ' + ((!selected || '[None]' == selected) ? 'selected' : '') + '>[None]</option> \
+                <option value="DES" ' + (('DES' == selected) ? 'selected' : '') + '>DES</option> \
+                <option value="AES128" ' + (('AES' == selected || 'AES128' == selected) ? 'selected' : '') + '>AES</option>  \
             </select>';
         }
     </script>
 
-    <?php
+<?php
 }
 ?>
