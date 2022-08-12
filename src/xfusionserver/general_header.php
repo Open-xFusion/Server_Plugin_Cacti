@@ -1,6 +1,5 @@
 <?php
 /***************************************************************************
- * Author  ......... Jack Zhang
  * Version ......... 1.0
  * History ......... 2017/3/27 Created
  * Purpose ......... the cacti page_header.php show Console tab in active

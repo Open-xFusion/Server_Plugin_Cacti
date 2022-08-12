@@ -1,43 +1,30 @@
-/*******************************************************************************
+# Server_Plugin_Cacti
 
-    Home Site ...... https://www.xfusion.com
-    Program ........ XFUSION server plugin for Cacti
-    Version ........ 1.2
-    Purpose ........ View/Manage XFUSION server informations from Cacti
+****************************************************************************
+Cacti Manager,Monitoring Management Plugin pack for XFUSION Server
+****************************************************************************
 
-*******************************************************************************/
+I. General Information
 
+    Name:     XFUSION_Cacti_Plugin
+    Category: Monitoring
+    Version:  1.2.2
 
-----[ Purpose
+II. Description
 
-    This plugin is used to communicate with XFUSION iBMC and HMM through SNMP protocol to
-     get the server os & hardware information, and present it.
+    The Cacti Plugin is a plug-in for monitoring XFUSION Server
 
+III.Supported software versions
 
-----[ Features
+    Cacti 0.8.8h for Linux
+    Cacti 1.2.20h for Linux
 
-    View total 15 categories of XFUSION server informations.
-    Related device and graph templates, to present the performance chart of XFUSION server.
+IV.Supported Device
 
+    XFUSION Blade Server:        E9000(MM910)
+    XFUSION Rack Server:         RH2288H V2,RH1288 V3,RH2288 V3, RH2288H V3,RH5885 V3,RH8100 V3,1288H V5,2288H V5,2488 V5,1288H V6,2288H V6
+    XFUSION High-density Server: XH321 V3,XH620 V3,XH622 V3,XH628 V3,XH321 V5
 
-----[ Installation
+V. Additional Resources
 
-    Install just like any other plugin, just throw it in the plugin directory,
-    in a folder called xfusionserver.
-
-
-----[ Possible Bugs?
-
-    If you figure out this problem, let me know!!!
-
-
-----[ Future Changes
-
-    Integrate with cacti threshold plugin to support monitor and warning of XFUSION server!
-
-
-----[ Changelog
-    
-	--- version 1.2 ---
-    XFUSION Initial release.
-
+    For more information consult User Guide. https://github.com/Open-xFusion/Server_Plugin_Cacti/tree/master/docs

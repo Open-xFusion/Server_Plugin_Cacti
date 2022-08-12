@@ -1,6 +1,5 @@
 <?php
 /***************************************************************************
- * Author  ......... Jack Zhang
  * Version ......... 1.0
  * History ......... 2017/4/11 Created
  * Purpose ......... This script is used for auto update XFUSION server information

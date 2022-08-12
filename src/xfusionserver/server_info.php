@@ -1,6 +1,5 @@
 <?php
 /***************************************************************************
- * Author  ......... Ni Peng
  * Version ......... 1.0
  * History ......... 2017/3/27 Created
  * Purpose ......... View XFUSION servers list, include iBMC and HMM

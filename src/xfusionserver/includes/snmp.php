@@ -1,6 +1,5 @@
 <?php
 /***************************************************************************
- * Author  ......... Jack Zhang
  * Version ......... 1.0
  * History ......... 2017/4/19 Created
  * Purpose ......... all function related with XFUSION server SNMP operations.

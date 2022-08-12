@@ -1,6 +1,5 @@
 <?php
 /***************************************************************************
- * Author  ......... Jack Zhang
  * Version ......... 1.0
  * History ......... 2017/3/27 Created
  * Purpose ......... Web page for batch import XFUSION servers from csv template.
@@ -239,7 +238,7 @@ function save_host_list($batch_id, &$server_list, &$exist_hosts) {
             } else {
                 $host_id = api_device_save(
                     '0' /*id*/,
-                    1 /*host template id*/,
+                    0 /*host template id*/,
                     "XFUSION Server - " . $server['ip_address'],
                     $server['ip_address'],
                     $server['snmp_community'],

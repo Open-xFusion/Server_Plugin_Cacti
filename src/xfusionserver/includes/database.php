@@ -1,6 +1,5 @@
 <?php
 /***************************************************************************
- * Author  ......... Jack Zhang
  * Version ......... 1.0
  * History ......... 2017/3/27 Created
  * Purpose ......... Used by cacti plugin framework, to list/install/uninstall
@@ -136,7 +135,7 @@ function _plugin_db_add_column ($plugin, $table, $column) {
             $sql .= ' AFTER ' . $column['after'];
 
         if (db_execute($sql)) {
-            cacti_log("XFUSION Server plugin:new column added: $table -> $column", false, "xfusionserver");
+            cacti_log("XFUSION Server plugin:new column added: $table -> implode(',', $column)", false, "xfusionserver");
         }
     }
 }
